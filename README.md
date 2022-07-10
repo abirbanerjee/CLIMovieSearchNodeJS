@@ -1,4 +1,4 @@
-![](https://ibb.co/8bPgPzY)
+![](	https://i.ibb.co/ZSczcH2/ezgif-com-gif-maker.gif)
 
 #CLI movie search using OMDb API
 ##A CLI based movie searching system where you can get the details of a movie in plain English.
