@@ -1,5 +1,7 @@
 const readline = require('readline');
 const axios = require('axios');
+const cfonts = require('cfonts');
+
 let searchString='';
 let srchType;
 const rl = readline.createInterface({
@@ -8,17 +10,32 @@ const rl = readline.createInterface({
 });
 
 const URI = 'http://www.omdbapi.com/?apikey=94dda6e6';
+cfonts.say('Search movie/game info',{
+    font:'shade',
+    align:'center',
+    lineheight:1
+});
 const menu = async()=>{
-console.log('Enter your choice:');
-console.log(`1. Search movie by title.
+cfonts.say('Enter your choice:',{font:'chrome',
+align:'center',
+color:'cyanBright.'});
+cfonts.say(`1. Search by title.
 2. Search by valid IMDB id.
-3. Exit`);
+3. Exit`,{
+    font:'chrome',
+    align:'center',
+    color:'cyanBright.'
+});
 
 rl.question('>',(ans)=>{
     switch(ans){
         case '1':
-            rl.question('Enter movie name:', async(movName)=>{
-                rl.question('Enter year of release if known(press enter to leave blank):',async (movYear)=>{
+            cfonts.say('Enter movie name:',{font:'chrome',
+            align:'center',})
+            rl.question('>', async(movName)=>{
+                cfonts.say('Enter year of release if known(press enter to leave blank):',{font:'chrome',
+                align:'center',})
+                rl.question('>',async (movYear)=>{
                     if(movYear==='')
                     {
                         searchString = `${URI}&s=${movName}`;
@@ -38,7 +55,9 @@ rl.question('>',(ans)=>{
                 })
                 
                 // console.log(reply.data.Search[0]);
-                console.log('Your search returned the following results:');
+                cfonts.say('Your search returned the following results:',{font:'chrome',
+                align:'center',
+                color:'cyanBright.'});
                 console.table(reply.data.Search);
                 rl.question(`Enter index to see details or "x" to exit:`,async(movIndex)=>{
                     if(movIndex==='x')
@@ -49,20 +68,32 @@ rl.question('>',(ans)=>{
                     srchType = reply.data.Search[parseInt(movIndex)].Type;
                     const title = reply.data.Search[parseInt(movIndex)].Title;
                     const yearOfRelease = reply.data.Search[parseInt(movIndex)].Year;
-                    console.log(`You chose ${title}`);
-                    const movDets = await axios.get(`${URI}&t=${title}&y=${yearOfRelease}`);
+                    cfonts.say(`You chose ${title}`,{font:'chrome',
+                    align:'center',
+                    color:'cyanBright.'});
+                    const movDets = await axios.get(encodeURI(`${URI}&t=${title}&y=${yearOfRelease}`));
                     // console.log(movDets.data);
-                    console.log(`${movDets.data.Title} is a ${srchType} of ${movDets.data.Genre} genre directed by ${movDets.data.Director} and written by ${movDets.data.Writer}. The ${srchType} starred ${movDets.data.Actors} in lead roles and released on ${movDets.data.Released}. `);
+                    cfonts.say(`${movDets.data.Title} is a ${srchType} of ${movDets.data.Genre} genre directed by ${movDets.data.Director} and written by ${movDets.data.Writer}. The ${srchType} starred ${movDets.data.Actors} in lead roles and released on ${movDets.data.Released}. `,{font:'chrome',
+                    align:'center',
+                    color:'cyanBright.'});
                     if(movDets.data.Plot != 'N/A'){
-                        console.log(`The ${srchType} has the following plot: ${movDets.data.Plot}`)
+                        cfonts.say(`The ${srchType} has the following plot: ${movDets.data.Plot}`,{font:'chrome',
+                        align:'center',
+                        color:'cyanBright.'})
                     }
                     if(movDets.data.Awards != 'N/A'){
-                        console.log(`The ${srchType} has ${movDets.data.Awards}.`)
+                        cfonts.say(`The ${srchType} has ${movDets.data.Awards}.`, {font:'chrome',
+                        align:'center',
+                        color:'cyanBright.'})
                     }
                     if(movDets.data.Ratings.length>0){
-                        console.log(`The ${srchType} has the following ratings:`);
+                        cfonts.say(`The ${srchType} has the following ratings:`,{font:'chrome',
+                        align:'center',
+                        color:'cyanBright.'});
                         movDets.data.Ratings.forEach(rating=>{
-                            console.log(`${rating.Value} by ${rating.Source}.`);
+                            cfonts.say(`${rating.Value} by ${rating.Source}.`,{font:'chrome',
+                            align:'center',
+                            color:'cyanBright.'});
                         })
                     }
 
@@ -75,20 +106,33 @@ rl.question('>',(ans)=>{
             break;
 
         case '2':
-            rl.question('Enter valid imdb id:',async(imdbId)=>{
+            cfonts.say('Enter valid imdb id:', {font:'chrome',
+            align:'center',
+            color:'cyanBright'})
+            rl.question('>',async(imdbId)=>{
                 searchString = `${URI}&i=${imdbId}`;
                 const movieDetails = await axios.get(`${searchString}`);
-                console.log(`${movieDetails.data.Title} is a ${movieDetails.data.Type} of ${movieDetails.data.Genre} genre directed by ${movieDetails.data.Director} and written by ${movieDetails.data.Writer}. The ${movieDetails.data.Type} starred ${movieDetails.data.Actors} in lead roles and released on ${movieDetails.data.Released}. `);
+                cfonts.say(`${movieDetails.data.Title} is a ${movieDetails.data.Type} of ${movieDetails.data.Genre} genre directed by ${movieDetails.data.Director} and written by ${movieDetails.data.Writer}. The ${movieDetails.data.Type} starred ${movieDetails.data.Actors} in lead roles and released on ${movieDetails.data.Released}. `,{font:'chrome',
+                align:'center',
+                color:'cyanBright.'});
                     if(movieDetails.data.Plot != 'N/A'){
-                        console.log(`The ${movieDetails.data.Type} has the following plot: ${movieDetails.data.Plot}`)
+                        cfonts.say(`The ${movieDetails.data.Type} has the following plot: ${movieDetails.data.Plot}`, {font:'chrome',
+                        align:'center',
+                        color:'cyanBright.'})
                     }
                     if(movieDetails.data.Awards != 'N/A'){
-                        console.log(`The ${movieDetails.data.Type} has ${movieDetails.data.Awards}.`)
+                        cfonts.say(`The ${movieDetails.data.Type} has ${movieDetails.data.Awards}.`,{font:'chrome',
+                        align:'center',
+                        color:'cyanBright.'})
                     }
                     if(movieDetails.data.Ratings.length>0){
-                        console.log(`The ${movieDetails.data.Type} has the following rating(s):`);
+                        cfonts.say(`The ${movieDetails.data.Type} has the following rating(s):`,{font:'chrome',
+                        align:'center',
+                        color:'cyanBright.'});
                         movieDetails.data.Ratings.forEach(rating=>{
-                            console.log(`${rating.Value} by ${rating.Source}.`);
+                            cfonts.say(`${rating.Value} by ${rating.Source}.`, {font:'chrome',
+                            align:'center',
+                            color:'cyanBright.'});
                         })
                     }
                 menu();
@@ -98,7 +142,9 @@ rl.question('>',(ans)=>{
             rl.close();
             break;
         default:
-            console.log('Invalid choice. Please try again.');
+            cfonts.say('Invalid choice. Please try again.',{font:'chrome',
+            align:'center',
+            color:'cyanBright.'});
             menu();
     }
 })
